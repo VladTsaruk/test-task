@@ -36,8 +36,6 @@ export const registerUser = createAsyncThunk(
       );
       const data = await response.data;
 
-      console.log(data);
-
       if (!data.token) {
         return rejectWithValue(data.error || { message: "No token returned" });
       }

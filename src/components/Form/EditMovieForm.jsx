@@ -52,7 +52,7 @@ const EditMovieForm = ({ movie, onClose }) => {
         onClose();
       })
       .catch((error) => {
-        console.error("Помилка при оновленні фільму:", error);
+        console.error("Error:", error);
       });
   };
 
@@ -72,7 +72,7 @@ const EditMovieForm = ({ movie, onClose }) => {
         <input
           type="text"
           name="title"
-          placeholder="Назва"
+          placeholder="Title"
           value={formData.title}
           onChange={handleChange}
           className="w-full px-3 py-2 border rounded"
@@ -82,7 +82,7 @@ const EditMovieForm = ({ movie, onClose }) => {
         <input
           type="number"
           name="year"
-          placeholder="Рік"
+          placeholder="Year"
           value={formData.year}
           onChange={handleChange}
           className="w-full px-3 py-2 border rounded"
@@ -96,7 +96,7 @@ const EditMovieForm = ({ movie, onClose }) => {
           className="w-full px-3 py-2 border rounded"
           disabled={loading}
         >
-          <option value="">Оберіть формат</option>
+          <option value="">Choose a format</option>
           <option value="DVD">DVD</option>
           <option value="VHS">VHS</option>
           <option value="Blu-ray">Blu-ray</option>

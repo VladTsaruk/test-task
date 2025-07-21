@@ -5,15 +5,17 @@ const ImportButton = () => {
   const dispatch = useDispatch();
 
   const handleImport = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      dispatch(importMovies(file));
+    const movies = e.target.files[0];
+    console.log(movies);
+    if (movies) {
+      dispatch(importMovies(movies));
     }
   };
 
   return (
-    <label className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+    <label className="cursor-pointer flex items-center bg-white text-black px-4 py-2 border border-blue-600 rounded-lg hover:bg-gray-200 transition">
       Import Movies
+      <img src="/upload.png" className="w-6 h-6 ml-2" alt="upload" />
       <input
         type="file"
         accept=".txt"
@@ -21,6 +23,7 @@ const ImportButton = () => {
         onChange={handleImport}
       />
     </label>
+
   );
 };
 

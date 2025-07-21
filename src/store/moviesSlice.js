@@ -2,11 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import api from "../utils/api.js";
 
-export const getMovies = createAsyncThunk("movies/getMovies", async () => {
-  const response = await api.get(`${import.meta.env.VITE_API_URL}/movies`);
-  return response.data.data;
-});
-
 export const getMovieById = createAsyncThunk(
   "movies/getMovieById",
   async (movieId, { rejectWithValue }) => {
@@ -23,16 +18,25 @@ export const importMovies = createAsyncThunk(
   "movies/importMovies",
   async (file, { rejectWithValue }) => {
     try {
+      if (!(file instanceof File)) {
+        return rejectWithValue("Invalid file");
+      }
+
       const formData = new FormData();
       formData.append("movies", file);
+
+      const token = localStorage.getItem("token");
 
       const response = await api.post(
         `${import.meta.env.VITE_API_URL}/movies/import`,
         formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "Authorization": token,
+          },
+        }
       );
-
-      console.log(response.data);
 
       return response.data.data;
     } catch (error) {
@@ -108,22 +112,16 @@ const moviesSlice = createSlice({
     loading: false,
     error: null,
   },
+  reducers: {
+    setMovies(state, action) {
+      state.list = action.payload;
+    },
+    setLoading(state, action) {
+      state.loading = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
-      // getMovies
-      .addCase(getMovies.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(getMovies.fulfilled, (state, action) => {
-        state.loading = false;
-        state.list = action.payload;
-      })
-      .addCase(getMovies.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.payload;
-      })
-
       // importMovies
       .addCase(importMovies.pending, (state) => {
         state.loading = true;
@@ -131,7 +129,9 @@ const moviesSlice = createSlice({
       })
       .addCase(importMovies.fulfilled, (state, action) => {
         state.loading = false;
-        state.list = [...state.list, ...action.payload];
+        if (Array.isArray(action.payload)) {
+          state.list.push(...action.payload);
+        }
       })
       .addCase(importMovies.rejected, (state, action) => {
         state.loading = false;
@@ -187,11 +187,9 @@ const moviesSlice = createSlice({
       })
       .addCase(updateMovie.fulfilled, (state, action) => {
         state.loading = false;
-        // Update the movie in the list
         state.list = state.list.map(movie => 
           movie.id === action.payload.id ? action.payload : movie
         );
-        // Update currentMovie if it's the same movie
         if (state.currentMovie && state.currentMovie.id === action.payload.id) {
           state.currentMovie = action.payload;
         }
@@ -202,5 +200,7 @@ const moviesSlice = createSlice({
       });
   },
 });
+
+export const { setMovies, setLoading } = moviesSlice.actions;
 
 export default moviesSlice.reducer;

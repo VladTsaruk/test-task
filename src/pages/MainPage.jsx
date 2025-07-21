@@ -2,7 +2,6 @@ import { useDispatch } from "react-redux";
 import { logoutUser } from "../store/userSlice.js";
 import { useNavigate } from "react-router-dom";
 
-import ImportButton from "../components/Button/ImportButton.jsx";
 import AddMovieForm from "../components/Form/AddMovieForm.jsx";
 import MoviesGrid from "../components/MovieGrid.jsx";
 
@@ -27,7 +26,6 @@ const Main = () => {
       </div>
 
       <AddMovieForm />
-      <ImportButton />
       <MoviesGrid />
     </div>
   );

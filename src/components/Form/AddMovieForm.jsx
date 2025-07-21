@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import { addMovie } from "../../store/moviesSlice.js";
+import { addMovie, setMovies } from "../../store/moviesSlice.js";
 import { useState } from "react";
+import ImportButton from "../Button/ImportButton.jsx";
 
 const AddMovieForm = () => {
   const dispatch = useDispatch();
@@ -11,20 +12,26 @@ const AddMovieForm = () => {
   const [title, setTitle] = useState("");
   const [year, setYear] = useState("");
   const [format, setFormat] = useState("");
-  const [actors, setActors] = useState([]);
+  const [actorsList, setActorsList] = useState("");
 
   const handlerSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(addMovie({ title, year, format, actors }));
+    const actors = actorsList
+      .split(",")
+      .map((actor) => actor.trim())
+      .filter((actor) => actor.length > 0);
+
+    dispatch(addMovie({ title, year, format, actors })).then(() => dispatch(setMovies()));
 
     setTitle("");
     setYear("");
     setFormat("");
-    setActors([]);
+    setActorsList("");
   };
 
   return (
+    <>
     <form
       onSubmit={handlerSubmit}
       className="bg-white p-6 rounded-xl shadow-md max-w-md mx-auto mb-8"
@@ -56,7 +63,7 @@ const AddMovieForm = () => {
         className="w-full px-3 py-2 border rounded"
         disabled={loading}
       >
-        <option value="">Оберіть формат</option>
+        <option value="">Choose a format</option>
         <option value="DVD">DVD</option>
         <option value="VHS">VHS</option>
         <option value="Blu-ray">Blu-ray</option>
@@ -65,8 +72,8 @@ const AddMovieForm = () => {
       <input
         type="text"
         placeholder="Stars (e.g. Leonardo DiCaprio, Natalie Portman)"
-        value={actors}
-        onChange={(e) => setActors(e.target.value)}
+        value={actorsList}
+        onChange={(e) => setActorsList(e.target.value)}
         className="w-full mb-4 mt-4 px-3 py-2 border rounded"
         disabled={loading}
       />
@@ -80,7 +87,11 @@ const AddMovieForm = () => {
       </button>
 
       {error && <p className="mt-2 text-red-600 text-center">{error}</p>}
+      <div className={"flex justify-center mt-3"}>
+        <ImportButton />
+      </div>
     </form>
+    </>
   );
 };
 
