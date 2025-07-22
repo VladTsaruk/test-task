@@ -69,4 +69,4 @@ COPY --from=build /usr/src/app/dist ./dist
 EXPOSE 3000
 
 # Run the application.
-CMD npx serve -s dist
+CMD npx serve -s dist --listen 0.0.0.0
