@@ -12,6 +12,10 @@ export const loginUser = createAsyncThunk(
       );
       const data = response.data;
 
+      if (data.status === 0) {
+        return rejectWithValue("Invalid email or password");
+      }
+
       if (!data.token) {
         return
       }
@@ -20,6 +24,7 @@ export const loginUser = createAsyncThunk(
       return data;
     } catch (error) {
       return rejectWithValue(
+        console.log(error.response) ||
         error.response?.data?.error || "Invalid email or password"
       );
     }
@@ -36,15 +41,15 @@ export const registerUser = createAsyncThunk(
       );
       const data = await response.data;
 
-      if (!data.token) {
-        return rejectWithValue(data.error || { message: "No token returned" });
+      if ((!data.token) || (data.status === 0)) {
+        return rejectWithValue("Invalid email or password");
       }
 
       localStorage.setItem("token", data.token);
       return data;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data || { message: error.message || "Unknown error" }
+        "Invalid email or password"
       );
     }
   }
@@ -80,6 +85,7 @@ const userSlice = createSlice({
         state.user = null;
         state.error = action.payload || "Login failed";
       })
+
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
         state.user = null;
@@ -93,7 +99,7 @@ const userSlice = createSlice({
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
         state.user = null;
-        state.error = action.payload.code;
+        state.error = action.payload;
       })
       .addCase(logoutUser.pending, (state) => {
         state.loading = true;

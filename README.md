@@ -3,14 +3,13 @@
 # 📥 Local Setup
 
 ## Requirements
-- Node.js (recommended 16+)
+- Node.js
 - npm or yarn
-- Currently, two official plugins are available:
 
 ## Local Run
 1. Clone the repository: git clone https://github.com/VladTsaruk/test-task.git
 2. Install dependencies: `npm install` or `yarn install`
-3. Configure environment variables (create `.env` with `API_URL`)
+3. Configure API_URL in `public/env.js` change `API_URL` on your API
 4. Start the development server: `npm run dev` or `yarn dev`
 
 ## Running with Docker

@@ -1,3 +1,1 @@
-window.ENV = {
-  API_URL: "default"
-};
+window.ENV = {API_URL: "http://localhost:8001/api/v1"};

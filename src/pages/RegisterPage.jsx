@@ -1,9 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../store/userSlice";
 import { useNavigate, Link } from "react-router-dom";
-
-import ERRORS from "../error-code.js";
 
 const Register = () => {
   const { loading, error } = useSelector((state) => state.user);
@@ -21,7 +19,8 @@ const Register = () => {
 
     dispatch(registerUser({ name, email, password, confirmPassword })).then(
       (res) => {
-        if (res.payload.token) {
+        console.log(res)
+        if (res.payload.status === 1) {
           setName("");
           setEmail("");
           setPassword("");
@@ -37,6 +36,7 @@ const Register = () => {
     !email.trim() ||
     !password.trim() ||
     !confirmPassword.trim();
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -97,9 +97,7 @@ const Register = () => {
         </div>
 
         {error && (
-          <p className="text-red-500 text-center text-sm mt-2">
-            {ERRORS[error]}
-          </p>
+          <div className="text-red-600 text-sm text-center">{error}</div>
         )}
 
         <button
