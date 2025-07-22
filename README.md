@@ -15,4 +15,4 @@
 
 ## Running with Docker
 You can run the application with a single command using Docker.
-- `docker run --name movies -p 3000:3000 -e API_URL=http://localhost:8000/api/v1 your_dockerhub_username/movies`
+- `docker run --name movies -p 3000:3000 -e VITE_API_URL=http://localhost:8000/api/v1 vladtsaruk/movies`
