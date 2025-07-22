@@ -7,7 +7,7 @@ export const loginUser = createAsyncThunk(
   async (userCredentials, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/sessions`,
+        `${window.ENV.API_URL}/sessions`,
         userCredentials
       );
       const data = response.data;
@@ -31,7 +31,7 @@ export const registerUser = createAsyncThunk(
   async (userCredantials, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/users`,
+        `${window.ENV.API_URL}/users`,
         userCredantials
       );
       const data = await response.data;

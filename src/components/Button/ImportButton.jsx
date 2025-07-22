@@ -6,7 +6,7 @@ const ImportButton = () => {
 
   const handleImport = (e) => {
     const movies = e.target.files[0];
-    console.log(movies);
+
     if (movies) {
       dispatch(importMovies(movies));
     }

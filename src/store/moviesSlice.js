@@ -6,7 +6,7 @@ export const getMovieById = createAsyncThunk(
   "movies/getMovieById",
   async (movieId, { rejectWithValue }) => {
     try {
-      const response = await api.get(`${import.meta.env.VITE_API_URL}/movies/${movieId}`);
+      const response = await api.get(`${window.ENV.API_URL}/movies/${movieId}`);
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.error || "Failed to fetch movie details");
@@ -28,7 +28,7 @@ export const importMovies = createAsyncThunk(
       const token = localStorage.getItem("token");
 
       const response = await api.post(
-        `${import.meta.env.VITE_API_URL}/movies/import`,
+        `${window.ENV.API_URL}/movies/import`,
         formData,
         {
           headers: {
@@ -50,7 +50,7 @@ export const addMovie = createAsyncThunk(
   async (movieData, { rejectWithValue }) => {
     try {
       const response = await api.post(
-        `${import.meta.env.VITE_API_URL}/movies`,
+        `${window.ENV.API_URL}/movies`,
         movieData
       );
 
@@ -68,7 +68,7 @@ export const deleteMovie = createAsyncThunk(
   async (movieData, { rejectWithValue }) => {
     try {
       const response = await api.delete(
-        `${import.meta.env.VITE_API_URL}/movies/${movieData}`
+        `${window.ENV.API_URL}/movies/${movieData}`
       );
 
       if (response.data.status === 1) {
@@ -88,7 +88,7 @@ export const updateMovie = createAsyncThunk(
     try {
       const { id, ...movieDetails } = movieData;
       const response = await api.patch(
-        `${import.meta.env.VITE_API_URL}/movies/${id}`,
+        `${window.ENV.API_URL}/movies/${id}`,
         movieDetails
       );
 
